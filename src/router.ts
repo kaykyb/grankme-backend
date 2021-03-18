@@ -4,6 +4,7 @@ import {
   loginWithDiscordCode,
   refreshToken,
 } from "./controllers/authController";
+import { healthz } from "./controllers/healthController";
 import { linkedGuilds, registerGuild } from "./controllers/mgmtController";
 import { me, userGuilds } from "./controllers/userController";
 import { userPlug } from "./modules/jwt";
@@ -37,6 +38,8 @@ const withGracefulErrorsAsync = (handler: CommonAsyncHandler) => {
 };
 
 export const putRoutes = (app: Application) => {
+  app.get("/healthz", withGracefulErrors(healthz));
+
   app.post(
     "/auth/loginWithDiscordCode",
     [body("code").isString(), handleMissingArgsError("auth")],

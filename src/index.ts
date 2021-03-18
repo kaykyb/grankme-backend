@@ -15,11 +15,7 @@ import { respondWithError } from "./modules/service";
 const start = Date.now(); // used for logging
 
 const app = express();
-const corsWhitelist = [
-  "http://localhost:4000",
-  "http://localhost:3000",
-  "https://app.grank.me",
-];
+const corsWhitelist = ["http://localhost:3000", "https://app.grank.me"];
 
 app.use(json());
 app.use(morgan("dev"));
@@ -27,7 +23,7 @@ app.use(helmet());
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (corsWhitelist.indexOf(origin) !== -1) {
+      if (origin === undefined || corsWhitelist.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
