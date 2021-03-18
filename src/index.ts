@@ -15,7 +15,7 @@ import { respondWithError } from "./modules/service";
 const start = Date.now(); // used for logging
 
 const app = express();
-const corsWhitelist = ["http://localhost:3000", "https://app.grank.me"];
+const corsWhitelist = ["http://localhost:3000", "https://grank.me"];
 
 app.use(json());
 app.use(morgan("dev"));
