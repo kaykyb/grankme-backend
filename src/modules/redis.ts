@@ -1,9 +1,9 @@
 import redis from "redis";
 import { promisify } from "util";
+import { getEnv } from "./util";
 
 const cache = redis.createClient({
-  host: "127.0.0.1",
-  port: 6379,
+  url: getEnv("REDIS_WEB_URL"),
 });
 
 export const getAsync = promisify(cache.get).bind(cache);
