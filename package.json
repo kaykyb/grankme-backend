@@ -1,0 +1,74 @@
+{
+   "name": "grankme",
+   "version": "0.1.0",
+   "description": "GrankMe",
+   "main": "build/index.js",
+   "repository": "git@github.com:fluoretto/milena-auth.git",
+   "author": "Kayky de Brito <oss@kaykyb.com>",
+   "license": "UNLICENSED",
+   "private": true,
+   "scripts": {
+      "clean": "rm -rf build",
+      "build": "tsc",
+      "start": "node -r module-alias/register build/index.js",
+      "dev": "nodemon",
+      "run-jest": "jest",
+      "test": "ts-node ./scripts/runTest.ts"
+   },
+   "devDependencies": {
+      "@types/cors": "^2.8.9",
+      "@types/express": "^4.17.8",
+      "@types/jest": "^26.0.19",
+      "@types/js-yaml": "^3.12.5",
+      "@types/lodash": "^4.14.164",
+      "@types/morgan": "^1.9.2",
+      "@types/node": "^14.14.6",
+      "@types/redis": "^2.8.28",
+      "@types/supertest": "^2.0.10",
+      "@typescript-eslint/eslint-plugin": "^4.6.1",
+      "@typescript-eslint/parser": "^4.6.1",
+      "eslint": "^7.13.0",
+      "eslint-config-prettier": "^6.15.0",
+      "eslint-plugin-jsdoc": "^30.7.7",
+      "eslint-plugin-prefer-arrow": "^1.2.2",
+      "jest": "^26.6.3",
+      "nodemon": "^2.0.6",
+      "prisma": "2.18.0",
+      "supertest": "^6.0.1",
+      "ts-jest": "^26.4.4",
+      "ts-node": "^9.0.0",
+      "tsconfig-paths": "^3.9.0",
+      "typescript": "^4.0.5"
+   },
+   "dependencies": {
+      "@prisma/client": "2.18.0",
+      "@types/jsonwebtoken": "^8.5.0",
+      "@types/node-fetch": "^2.5.8",
+      "body-parser": "^1.19.0",
+      "class-transformer": "^0.3.1",
+      "class-transformer-validator": "^0.9.1",
+      "class-validator": "^0.12.2",
+      "cors": "^2.8.5",
+      "dotenv": "^8.2.0",
+      "express": "^4.17.1",
+      "express-validator": "^6.6.1",
+      "firebase-admin": "^9.5.0",
+      "helmet": "^4.2.0",
+      "jsonwebtoken": "^8.5.1",
+      "lodash": "^4.17.20",
+      "module-alias": "^2.2.2",
+      "morgan": "^1.10.0",
+      "node-fetch": "^2.6.1",
+      "redis": "^3.0.2",
+      "reflect-metadata": "^0.1.10",
+      "tslib": "^2.0.3"
+   },
+   "_moduleAliases": {
+      "@root": "build"
+   },
+   "jest": {
+      "moduleNameMapper": {
+         "^@root(.*)$": "<rootDir>/build$1"
+      }
+   }
+}

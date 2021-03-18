@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model DiscordLink {
+  id              String   @id @default(uuid())
+  discordUserId   String   @unique
+  refreshToken    String
+  lastRefreshTime DateTime
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String   @unique
+}
+
+model User {
+  id          String        @id @default(uuid())
+  email       String        @unique
+  DiscordLink DiscordLink?
+  UserSession UserSession[]
+  GuildLink   GuildLink[]
+}
+
+model UserSession {
+  id           String   @id @default(uuid())
+  refreshToken String
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model GuildLink {
+  id      String @id @default(uuid())
+  guildId String @unique
+  owner   User   @relation(fields: [userId], references: [id])
+  userId  String
+}
