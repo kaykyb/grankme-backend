@@ -108,8 +108,9 @@ export const updateLinkedGuildChannel = async (
 
   if (oldChannel) {
     await removeChannelFromCache(oldChannel);
-    await putChannelOnCache(link.selectedChannel);
   }
+
+  await putChannelOnCache(link.selectedChannel);
 
   respond(res, { selectedChannel: link.selectedChannel });
 };
