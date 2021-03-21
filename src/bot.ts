@@ -5,6 +5,7 @@ import {
 } from "./modules/channelsCacheManager";
 import { getEnv, log } from "./modules/util";
 import Discord, { TextChannel, Message } from "discord.js";
+import { client } from "./modules/bot";
 
 export const start = async () => {
   log("bot", "reset", "Resetando Redis...");
@@ -16,7 +17,6 @@ export const start = async () => {
   log("bot", "starting", "O bot está iniciando.");
 
   const token = getEnv("DISCORD_BOT_TOKEN");
-  const client = new Discord.Client();
 
   client.on("message", async (msg) => {
     const tracked = await hasChannelInCache(msg.channel.id);

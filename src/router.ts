@@ -8,6 +8,7 @@ import { healthz } from "./controllers/healthController";
 import {
   linkedGuilds,
   registerGuild,
+  topMessagesForLink,
   updateLinkedGuildChannel,
 } from "./controllers/mgmtController";
 import { guildChannels, me, userGuilds } from "./controllers/userController";
@@ -82,5 +83,10 @@ export const putRoutes = (app: Application) => {
     "/mgmt/link/:id/selectedChannel",
     [userPlug, body("channelId").isString(), handleMissingArgsError("mgmt")],
     withGracefulErrorsAsync(updateLinkedGuildChannel)
+  );
+  app.get(
+    "/mgmt/link/:id/topMessagesForLink",
+    [userPlug],
+    withGracefulErrorsAsync(topMessagesForLink)
   );
 };

@@ -1,4 +1,4 @@
-import { getGuildChannels } from "@root/modules/bot";
+import { getGuildChannels, getTopMessagesForChannel } from "@root/modules/bot";
 import {
   putChannelOnCache,
   removeChannelFromCache,
@@ -60,7 +60,6 @@ export const linkedGuilds = async (req: PrivateRequest, res: Response) => {
   });
 };
 
-//todo improve security
 export const updateLinkedGuildChannel = async (
   req: PrivateRequest,
   res: Response
@@ -113,4 +112,31 @@ export const updateLinkedGuildChannel = async (
   }
 
   respond(res, { selectedChannel: link.selectedChannel });
+};
+
+export const topMessagesForLink = async (
+  req: PrivateRequest,
+  res: Response
+) => {
+  const linkId = req.params.id;
+
+  if (!req.user.links.includes(linkId)) {
+    throw new NoPermissionError(
+      `${req.user.uid} has no permission for link ${linkId}`,
+      {
+        originModule: "mgmt",
+        originService: "server",
+      }
+    );
+  }
+
+  const link = await prisma.guildLink.findFirst({
+    where: {
+      id: linkId,
+    },
+  });
+
+  const messages = await getTopMessagesForChannel(link.selectedChannel);
+
+  respond(res, { messages });
 };
