@@ -36,8 +36,9 @@ model UserSession {
 }
 
 model GuildLink {
-  id      String @id @default(uuid())
-  guildId String @unique
-  owner   User   @relation(fields: [userId], references: [id])
-  userId  String
+  id              String  @id @default(uuid())
+  guildId         String  @unique
+  owner           User    @relation(fields: [userId], references: [id])
+  userId          String
+  selectedChannel String?
 }

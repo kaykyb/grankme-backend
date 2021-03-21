@@ -11,6 +11,8 @@ export interface CommonResponse extends Response {}
 export interface AccessTokenPayload {
   sessionId: string;
   uid: string;
+  guilds: string[];
+  links: string[];
 }
 
 export interface AccessTokenResponse {
@@ -45,4 +47,14 @@ export interface DiscordUserGuild {
   owner?: boolean;
   permissions: string;
   features: string[];
+}
+
+export interface DiscordChannel {
+  id: string;
+  type: number;
+  guild_id?: string;
+  position?: boolean;
+  name?: string;
+  nsfw?: boolean;
+  icon?: string;
 }

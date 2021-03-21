@@ -5,7 +5,7 @@ import { UnauthorizedError } from "@root/types/errors";
 
 export const createAccessToken = (payload: AccessTokenPayload) => {
   return jwt.sign(payload, PRIV_KEY, {
-    expiresIn: "20m",
+    expiresIn: "1h",
     algorithm: "RS256",
   });
 };

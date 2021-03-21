@@ -1,3 +1,8 @@
+import { getGuildChannels } from "@root/modules/bot";
+import {
+  putChannelOnCache,
+  removeChannelFromCache,
+} from "@root/modules/channelsCacheManager";
 import { exchangeDiscordCode } from "@root/modules/discord";
 import { prisma } from "@root/modules/prisma";
 import { respond } from "@root/modules/service";
@@ -53,4 +58,59 @@ export const linkedGuilds = async (req: PrivateRequest, res: Response) => {
   respond(res, {
     guilds,
   });
+};
+
+//todo improve security
+export const updateLinkedGuildChannel = async (
+  req: PrivateRequest,
+  res: Response
+) => {
+  const linkId = req.params.id;
+  const { channelId } = req.body;
+
+  if (!req.user.links.includes(linkId)) {
+    throw new NoPermissionError(
+      `${req.user.uid} has no permission for link ${linkId}`,
+      {
+        originModule: "mgmt",
+        originService: "server",
+      }
+    );
+  }
+
+  const oldLink = await prisma.guildLink.findFirst({
+    where: {
+      id: linkId,
+    },
+  });
+
+  const channels = await getGuildChannels(oldLink.guildId);
+
+  if (!channels.filter((x) => x.id === channelId)) {
+    throw new NoPermissionError(
+      `${req.user.uid} has no permission for channel ${channelId}`,
+      {
+        originModule: "mgmt",
+        originService: "server",
+      }
+    );
+  }
+
+  const oldChannel = oldLink.selectedChannel;
+
+  const link = await prisma.guildLink.update({
+    where: {
+      id: linkId,
+    },
+    data: {
+      selectedChannel: channelId,
+    },
+  });
+
+  if (oldChannel) {
+    await removeChannelFromCache(oldChannel);
+    await putChannelOnCache(link.selectedChannel);
+  }
+
+  respond(res, { selectedChannel: link.selectedChannel });
 };

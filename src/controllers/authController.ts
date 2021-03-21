@@ -27,9 +27,17 @@ export const loginWithDiscordCode = async (req: Request, res: Response) => {
   );
   const session = await createUserSession(discordLink.userId);
 
+  const links = await prisma.guildLink.findMany({
+    where: {
+      userId: discordLink.userId,
+    },
+  });
+
   const accessToken = createAccessToken({
     sessionId: session.id,
     uid: discordLink.userId,
+    guilds: links ? links.map((l) => l.guildId) : [],
+    links: links ? links.map((l) => l.id) : [],
   });
 
   await storeDiscordAccessToken(discordLink.userId, token.access_token);
@@ -52,6 +60,13 @@ export const refreshToken = async (req: Request, res: Response) => {
     where: {
       id: sessionId,
     },
+    include: {
+      user: {
+        include: {
+          GuildLink: true,
+        },
+      },
+    },
   });
 
   if (!token || token.refreshToken !== refreshToken) {
@@ -67,6 +82,10 @@ export const refreshToken = async (req: Request, res: Response) => {
   const accessToken = createAccessToken({
     sessionId: sessionId,
     uid: token.userId,
+    guilds: token.user.GuildLink
+      ? token.user.GuildLink.map((l) => l.guildId)
+      : [],
+    links: token.user.GuildLink ? token.user.GuildLink.map((l) => l.id) : [],
   });
 
   respond(

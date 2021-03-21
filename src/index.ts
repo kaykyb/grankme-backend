@@ -11,6 +11,7 @@ import cors from "cors";
 import { getEnv, log } from "@root/modules/util";
 import { putRoutes } from "./router";
 import { respondWithError } from "./modules/service";
+import { start as startBot } from "./bot";
 
 const start = Date.now(); // used for logging
 
@@ -66,7 +67,13 @@ app.use((err: any, req: any, res: typeof express.response, next: any) => {
   );
 });
 
-app.listen(getEnv("PORT"), () => {
-  const end = Date.now() - start;
-  log("server", "start", `Server started in ${end}ms`);
-});
+const startServices = async () => {
+  await startBot();
+
+  app.listen(getEnv("PORT"), () => {
+    const end = Date.now() - start;
+    log("server", "start", `O servidor iniciou em ${end}ms`);
+  });
+};
+
+startServices();
