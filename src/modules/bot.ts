@@ -74,8 +74,11 @@ function formatMessages(
       count: v.count,
     }));
 
-    const upCount = reactionsParsed.filter((x) => x.reaction === "👍").length;
-    const downCount = reactionsParsed.filter((x) => x.reaction === "👎").length;
+    const upReactions = reactionsParsed.filter((x) => x.reaction === "👍");
+    const downReactions = reactionsParsed.filter((x) => x.reaction === "👎");
+
+    const upCount = upReactions.length > 0 ? upReactions[0].count : 1;
+    const downCount = downReactions.length > 0 ? downReactions[0].count : 1;
 
     return {
       id,
